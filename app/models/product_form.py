@@ -8,4 +8,4 @@ class ProductForm(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String)
 
-    products: Mapped[list["Product"]] = relationship("Product", back_populates="product_form")
+    products: Mapped[list["Product"]] = relationship("Product", back_populates="product_form")  # type: ignore

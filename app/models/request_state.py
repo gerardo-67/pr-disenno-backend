@@ -8,4 +8,4 @@ class RequestState(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String)
 
-    requests: Mapped[list["Request"]] = relationship("Request", back_populates="request_state")
+    requests: Mapped[list["Request"]] = relationship("Request", back_populates="request_state") # type: ignore

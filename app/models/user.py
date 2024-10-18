@@ -9,4 +9,7 @@ class User(Base):
     identification: Mapped[str] = mapped_column(String)
     is_admin: Mapped[bool] = mapped_column(Boolean)
 
+    requests: Mapped[list["Request"]] = relationship(back_populates="user")
+    product_points: Mapped[list["UserProductPoints"]] = relationship(back_populates="user")
+
     
