@@ -1,6 +1,6 @@
 from sqlalchemy import Boolean, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app.base import Base
+from app.database.base import Base
 
 class UserProductPoints(Base):
     __tablename__ = "user_product_points"
@@ -9,5 +9,5 @@ class UserProductPoints(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
     product_id: Mapped[int] = mapped_column(ForeignKey("product.id"))
 
-    user: Mapped["User"] = relationship(back_populates="product_points")
-    product: Mapped["Product"] = relationship()
+    user: Mapped["User"] = relationship(back_populates="product_points") # type: ignore
+    product: Mapped["Product"] = relationship() # type: ignore

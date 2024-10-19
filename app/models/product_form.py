@@ -1,6 +1,6 @@
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app.base import Base
+from app.database.base import Base
 
 class ProductForm(Base):
     __tablename__ = "product_form"

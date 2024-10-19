@@ -1,6 +1,6 @@
 from sqlalchemy import Boolean, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app.base import Base
+from app.database.base import Base
 
 class User(Base):
     __tablename__ = "user"
@@ -9,7 +9,7 @@ class User(Base):
     identification: Mapped[str] = mapped_column(String)
     is_admin: Mapped[bool] = mapped_column(Boolean)
 
-    requests: Mapped[list["Request"]] = relationship(back_populates="user")
-    product_points: Mapped[list["UserProductPoints"]] = relationship(back_populates="user")
+    requests: Mapped[list["Request"]] = relationship(back_populates="user") # type: ignore
+    product_points: Mapped[list["UserProductPoints"]] = relationship(back_populates="user") # type: ignore
 
     

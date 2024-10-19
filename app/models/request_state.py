@@ -1,6 +1,6 @@
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app.base import Base
+from app.database.base import Base
 
 class RequestState(Base):
     __tablename__ = "request_state"
