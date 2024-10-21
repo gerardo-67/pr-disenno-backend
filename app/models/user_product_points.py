@@ -1,13 +1,10 @@
-from sqlalchemy import Boolean, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import Base
 
-class UserProductPoints(Base):
-    __tablename__ = "user_product_points"
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    points: Mapped[int] = mapped_column(Integer)
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
-    product_id: Mapped[int] = mapped_column(ForeignKey("product.id"))
-
-    user: Mapped["User"] = relationship(back_populates="product_points") # type: ignore
-    product: Mapped["Product"] = relationship() # type: ignore
+user_product_points = Table(
+    'user_product_points', Base.metadata,
+    Column('user_id', ForeignKey('user.id'), primary_key=True),
+    Column('product_id', ForeignKey('product.id'), primary_key=True),
+    Column('points', Integer)
+)

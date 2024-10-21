@@ -1,0 +1,2 @@
+class AlreadyInDatabaseError(Exception):
+    pass

@@ -5,7 +5,7 @@ from app.database.base import Base
 class Pharmacy(Base):
     __tablename__ = "pharmacy"
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String)
+    name: Mapped[str] = mapped_column(String, index=True)
     email: Mapped[str] = mapped_column(String)
     phone_number: Mapped[str] = mapped_column(String)
     address: Mapped[str] = mapped_column(String)

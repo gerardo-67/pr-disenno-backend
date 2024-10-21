@@ -6,10 +6,10 @@ from app.database.base import Base
 class Request(Base):
     __tablename__ = "request"
     id: Mapped[int] = mapped_column(primary_key=True)
-    invoice_id: Mapped[int] = mapped_column(Integer)
+    invoice_id: Mapped[int] = mapped_column(Integer, index=True)
     purchase_date: Mapped[date] = mapped_column(Date)
     product_quantity: Mapped[int] = mapped_column(Integer)
-    invoice_image: Mapped[bytes] = mapped_column(LargeBinary)
+    invoice_image: Mapped[str] = mapped_column(String)
     request_state_id: Mapped[int] = mapped_column(Integer, ForeignKey("request_state.id"))
     pharmacy_id: Mapped[int] = mapped_column(Integer, ForeignKey("pharmacy.id"))
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"))
