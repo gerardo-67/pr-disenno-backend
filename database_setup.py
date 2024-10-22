@@ -1,13 +1,21 @@
 from datetime import date, timedelta
 import random
+from sqlalchemy import create_engine
+from dotenv import load_dotenv
+import os
+
 from app.database import Base
 from app.database.database_manager import DatabaseManager
 from app.models import *
-from sqlalchemy import create_engine, insert
 
-DATABASE_URL_SQLITE = 'sqlite:///disenno.db'
+# Cargar las variables del archivo .env
+load_dotenv()
 
-engine = create_engine(DATABASE_URL_SQLITE, echo=True)
+# Leer la variable de entorno DATABASE_URL
+DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL_SQLITE = os.getenv("DATABASE_URL_SQLITE")
+
+engine = create_engine(DATABASE_URL, echo=True)
 Base.metadata.create_all(bind=engine)
 
 

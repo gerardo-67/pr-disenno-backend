@@ -6,3 +6,6 @@ disenno.db
 
 # __pycache__
 **/__pycache__
+
+# private variables
+.env
