@@ -8,7 +8,6 @@ load_dotenv()
 
 # Leer la variable de entorno DATABASE_URL
 DATABASE_URL = os.getenv("DATABASE_URL")
-DATABASE_URL_SQLITE = os.getenv("DATABASE_URL_SQLITE")
 
 class DatabaseManager():
     _instance = None

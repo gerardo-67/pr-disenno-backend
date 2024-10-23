@@ -1,0 +1,11 @@
+services:
+  app:
+    image: proyecto-disenno-prueba
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+    command: "uvicorn app.app:app --reload --port=8000 --host=0.0.0.0"  # Asegúrate de que esta ruta sea correcta
+    ports:
+      - "8000:8000"
