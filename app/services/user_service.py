@@ -45,3 +45,13 @@ class UserService:
         session.commit()
         session.refresh(user)
         return user
+    
+    def change_password(self, user_id: int, new_password: str):
+        session = self.db.get_session()
+        user = session.query(User).filter(User.id == user_id).first()
+        if user is None:
+            raise NotFoundError("User not found")
+        user.password = new_password
+        session.commit()
+        session.refresh(user)
+        return user

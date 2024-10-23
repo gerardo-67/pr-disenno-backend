@@ -4,7 +4,7 @@ from app.exceptions.already_in_db_error import AlreadyInDatabaseError
 from app.exceptions.not_found_error import NotFoundError
 
 from app.schemas import UserOut, UserIn, UserUpdate
-from app.schemas.user_schema import UserLogin
+from app.schemas.user_schema import UserLogin, UserPassword
 from app.services import UserService
 
 user_router = APIRouter(prefix="/users")
@@ -41,5 +41,12 @@ def create_user(user: UserIn, user_service: UserService = Depends(UserService)):
 def login_user(user_login: UserLogin, user_service: UserService = Depends(UserService)):
     try:
         return user_service.validate_user(user_login.email, user_login.password)
+    except NotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    
+@user_router.put("/password", response_model=UserOut, status_code=status.HTTP_200_OK)
+def change_password(user_password: UserPassword, user_service: UserService = Depends(UserService)):
+    try:
+        return user_service.change_password(user_password.user_id, user_password.password)
     except NotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))

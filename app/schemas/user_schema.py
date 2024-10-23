@@ -25,3 +25,7 @@ class UserUpdate(BaseModel):
 class UserLogin(BaseModel):
     email: str
     password: str
+
+class UserPassword(BaseModel):
+    user_id: int
+    password: str

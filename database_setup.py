@@ -114,4 +114,18 @@ def populate_db():
     session.add_all(requests)
     session.commit()
 
-populate_db()
+#populate_db()
+
+# delete all data from tables
+def delete_data():
+    session = DatabaseManager().get_session()
+    session.query(Request).delete()
+    session.query(Pharmacy).delete()
+    session.query(RequestState).delete()
+    session.query(user_product_points).delete()
+    session.query(Product).delete()
+    session.query(ProductForm).delete()
+    session.query(User).delete()
+    session.commit()
+
+#delete_data()
