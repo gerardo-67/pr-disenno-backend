@@ -1,6 +1,7 @@
 from typing import List, Optional
 from fastapi import APIRouter, Depends, status, HTTPException
 from app.exceptions.already_in_db_error import AlreadyInDatabaseError
+from app.exceptions.invalid_input_error import InvalidInputError
 from app.exceptions.not_found_error import NotFoundError
 
 from app.schemas.product_schema import ProductOut, ProductIn, ProductProgramIn
@@ -9,11 +10,13 @@ from app.services.product_service import ProductService
 product_router = APIRouter(prefix="/products")
 
 @product_router.get("", response_model=List[ProductOut], status_code=status.HTTP_200_OK)
-def get_products(is_in_program: Optional[bool] = None, product_service: ProductService = Depends(ProductService)):
+def get_products(is_in_program: Optional[str] = None, product_service: ProductService = Depends(ProductService)):
     try:
         return product_service.get_products(is_in_program)
     except NotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
+    except InvalidInputError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 @product_router.get("/{product_id}", response_model=ProductOut, status_code=status.HTTP_200_OK)
 def get_product(product_id: int, product_service: ProductService = Depends(ProductService)):

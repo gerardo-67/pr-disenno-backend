@@ -1,6 +1,7 @@
 from typing import Optional
 from app.database import DatabaseManager
 from app.exceptions.already_in_db_error import AlreadyInDatabaseError
+from app.exceptions.invalid_input_error import InvalidInputError
 from app.exceptions.not_found_error import NotFoundError
 from app.models import user_product_points
 from app.models.product import Product
@@ -21,11 +22,17 @@ class ProductService:
             "product_form": product.product_form.name,
             "points_count": points
         }
-    def get_products(self, is_in_program: Optional[bool] = None):
+    def get_products(self, is_in_program: Optional[str] = None):
         session = self.db.get_session()
         if is_in_program is not None:
-            products = session.query(Product).filter(Product.is_in_program == is_in_program).all()
-            return products
+            if is_in_program.lower() == "true": 
+                products = session.query(Product).filter(Product.is_in_program == True).all()
+                return [self.__prepare_product(product) for product in products]
+            elif is_in_program.lower() == "false":
+                products = session.query(Product).filter(Product.is_in_program == False).all()
+                return [self.__prepare_product(product) for product in products]
+            else:
+                raise InvalidInputError("Invalid input. True or False expected")
         products = session.query(Product).all()
         return [self.__prepare_product(product) for product in products]
     
