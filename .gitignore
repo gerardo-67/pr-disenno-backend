@@ -9,3 +9,5 @@ disenno.db
 
 # private variables
 .env
+
+env
