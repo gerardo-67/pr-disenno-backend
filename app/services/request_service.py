@@ -40,7 +40,7 @@ class RequestService:
     def __prepare_simple_request(self, request):
         return {
             "id": request.id,
-            "invoice_id": request.id,
+            "invoice_id": request.invoice_id,
             "product_name": request.product.name,
             "request_state": request.request_state.name
         }
