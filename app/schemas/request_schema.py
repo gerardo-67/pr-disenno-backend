@@ -33,3 +33,8 @@ class RequestIn(BaseModel):
 class RequestStateUpdate(BaseModel):
     request_state_id: int
     
+class SimpleRequest(BaseModel):
+    id: int
+    invoice_id: int
+    product_name: str
+    request_state: str

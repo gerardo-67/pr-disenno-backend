@@ -37,14 +37,20 @@ class RequestService:
             "user": request.user,
             "product": self.__prepare_product(request.product)
         }
-    
+    def __prepare_simple_request(self, request):
+        return {
+            "id": request.id,
+            "invoice_id": request.id,
+            "product_name": request.product.name,
+            "request_state": request.request_state.name
+        }
     def get_requests(
             self, pharmacy_id: int = None
             ,product_id: int = None
             ,purchase_date: date = None
             ,request_state_id: int = None
             ,user_id: int = None):
-        session = self.db.get_session()
+        session = next(self.db.get_session())
         requests = session.query(Request)
         if pharmacy_id is not None:
             requests = requests.filter(Request.pharmacy_id == pharmacy_id)
@@ -57,19 +63,21 @@ class RequestService:
         if user_id is not None:
             requests = requests.filter(Request.user_id == user_id)
         requests = requests.all()
-        return [self.__prepare_request(request) for request in requests]
+        
+        return [self.__prepare_simple_request(request) for request in requests]
     
     def get_request(self, id):
-        session = self.db.get_session()
+        session = next(self.db.get_session())
         request = session.query(Request).filter(Request.id == id).first()
         if request is None:
             raise NotFoundError("Request not found")
+        
         return self.__prepare_request(request)
     
     # Updates the state of a request, if the request is in pending state and the 
     # new state is accepted, the user points are updated
     def update_request_state(self, id, request_state_id):
-        session = self.db.get_session()
+        session = next(self.db.get_session())
         request = session.query(Request).filter(Request.id == id).first()
         if request is None:
             raise NotFoundError("Request not found")
@@ -103,12 +111,15 @@ class RequestService:
                 )
         request.request_state_id = request_state_id
         session.commit()
+        session.refresh(request)
+        
         return self.__prepare_request(request)
     
     def create_request(self, request: RequestIn):
-        session = self.db.get_session()
+        session = next(self.db.get_session())
         request = Request(**request.model_dump())
         session.add(request)
         session.commit()
+        session.refresh(request)
         return self.__prepare_request(request)
     

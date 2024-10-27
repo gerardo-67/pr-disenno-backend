@@ -7,18 +7,21 @@ class PharmacyService:
         self.db = DatabaseManager()
 
     def get_pharmacies(self):
-        session = self.db.get_session()
+        session = next(self.db.get_session())
         pharmacies = session.query(Pharmacy).all()
+        
         return pharmacies
     def get_pharmacy(self, id):
-        session = self.db.get_session()
+        session = next(self.db.get_session())
         pharmacy = session.query(Pharmacy).filter(Pharmacy.id == id).first()
         if pharmacy is None:
             raise NotFoundError("Pharmacy not found")
+        
         return pharmacy
     def get_pharmacy_by_name(self, name):
-        session = self.db.get_session()
+        session = next(self.db.get_session())
         pharmacy = session.query(Pharmacy).filter(Pharmacy.name == name).first()
         if pharmacy is None:
             raise NotFoundError("Pharmacy not found")
+        
         return pharmacy

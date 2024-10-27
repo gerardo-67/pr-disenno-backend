@@ -22,8 +22,15 @@ class ProductService:
             "product_form": product.product_form.name,
             "points_count": points
         }
+    def __prepare_simple_product(self, product: Product, points: Optional[int] = 0):
+        return {
+            "name": product.name,
+            "product_form": product.product_form.name,
+            "points_count": points,
+            "is_in_program": product.is_in_program
+        }
     def get_products(self, is_in_program: Optional[str] = None):
-        session = self.db.get_session()
+        session = next(self.db.get_session())
         if is_in_program is not None:
             if is_in_program.lower() == "true": 
                 products = session.query(Product).filter(Product.is_in_program == True).all()
@@ -34,24 +41,27 @@ class ProductService:
             else:
                 raise InvalidInputError("Invalid input. True or False expected")
         products = session.query(Product).all()
-        return [self.__prepare_product(product) for product in products]
+        
+        return [self.__prepare_simple_product(product) for product in products]
     
     def get_product(self, id):
-        session = self.db.get_session()
+        session = next(self.db.get_session())
         product = session.query(Product).filter(Product.id == id).first()
         if product is None:
             raise NotFoundError("Product not found")
+        
         return self.__prepare_product(product)
 
     def get_product_by_name(self, name):
-        session = self.db.get_session()
+        session = next(self.db.get_session())
         product = session.query(Product).filter(Product.name == name).first()
         if product is None:
             raise NotFoundError("Product not found")
-        return self.__prepare_product(product)
+        
+        return self.__prepare_simple_product(product)
     
     def get_products_of_user(self, user_id: int, is_in_program: Optional[bool] = None):
-        session = self.db.get_session()
+        session = next(self.db.get_session())
         products = (
         session.query(Product, user_product_points.c.points)
         .outerjoin(user_product_points, Product.id == user_product_points.c.product_id)
@@ -59,10 +69,11 @@ class ProductService:
         )
         if is_in_program is not None:
             products = products.filter(Product.is_in_program == is_in_program)
-        return [self.__prepare_product(product, points) for product, points in products.all()]
+        
+        return [self.__prepare_simple_product(product, points) for product, points in products.all()]
     
     def register_product_in_program(self, product_id: int, points_per_purchase: int, points_for_redemption: int):
-        session = self.db.get_session()
+        session = next(self.db.get_session())
         product = session.query(Product).filter(Product.id == product_id).first()
         if product is None:
             raise NotFoundError("Product not found")
@@ -72,4 +83,5 @@ class ProductService:
         product.points_per_purchase = points_per_purchase
         product.points_for_redemption = points_for_redemption
         session.commit()
+        
         return self.__prepare_product(product)

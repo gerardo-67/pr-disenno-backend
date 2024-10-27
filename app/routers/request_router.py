@@ -3,12 +3,12 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from typing import List, Optional
 
 from app.exceptions.not_found_error import NotFoundError
-from app.schemas.request_schema import RequestOut, RequestIn, RequestStateUpdate
+from app.schemas.request_schema import RequestOut, RequestIn, RequestStateUpdate, SimpleRequest
 from app.services.request_service import RequestService
 
 request_router = APIRouter(prefix="/requests")
 
-@request_router.get("", response_model=List[RequestOut], status_code=status.HTTP_200_OK)
+@request_router.get("", response_model=List[SimpleRequest], status_code=status.HTTP_200_OK)
 def get_requests(
     pharmacy_id: Optional[int] = None, 
     product_id: Optional[int] = None, 

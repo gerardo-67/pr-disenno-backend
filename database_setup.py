@@ -1,6 +1,6 @@
 from datetime import date, timedelta
 import random
-from sqlalchemy import create_engine
+from sqlalchemy import DDL, create_engine, text
 from dotenv import load_dotenv
 import os
 
@@ -114,7 +114,7 @@ def populate_db():
     session.add_all(requests)
     session.commit()
 
-#populate_db()
+populate_db()
 
 # delete all data from tables
 def delete_data():
@@ -126,6 +126,20 @@ def delete_data():
     session.query(Product).delete()
     session.query(ProductForm).delete()
     session.query(User).delete()
+    session.commit()
+
+    ddl_statements = [
+        DDL("ALTER SEQUENCE request_id_seq RESTART WITH 1;"),
+        DDL("ALTER SEQUENCE pharmacy_id_seq RESTART WITH 1;"),
+        DDL("ALTER SEQUENCE request_state_id_seq RESTART WITH 1;"),
+        DDL("ALTER SEQUENCE product_id_seq RESTART WITH 1;"),
+        DDL("ALTER SEQUENCE product_form_id_seq RESTART WITH 1;"),
+        DDL("ALTER SEQUENCE user_id_seq RESTART WITH 1;")
+    ]
+
+    # Ejecutar cada comando DDL
+    for ddl in ddl_statements:
+        session.execute(ddl)
     session.commit()
 
 #delete_data()

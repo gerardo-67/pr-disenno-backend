@@ -28,3 +28,10 @@ class ProductIn(BaseModel):
 class ProductProgramIn(BaseModel):
     points_per_purchase: int
     points_for_redemption: int
+
+
+class SimpleProduct(BaseModel):
+    name: str
+    product_form: str
+    points_count: int
+    is_in_program: bool
