@@ -5,6 +5,7 @@ from app.exceptions.invalid_input_error import InvalidInputError
 from app.exceptions.not_found_error import NotFoundError
 from app.models import user_product_points
 from app.models.product import Product
+from app.models.product_form import ProductForm
 
 class ProductService:
     def __init__(self):
@@ -29,6 +30,11 @@ class ProductService:
             "points_count": points,
             "is_in_program": product.is_in_program
         }
+    def get_product_forms(self):
+        session = next(self.db.get_session())
+        product_forms = session.query(ProductForm).all()
+        return product_forms
+    
     def get_products(self, is_in_program: Optional[str] = None):
         session = next(self.db.get_session())
         if is_in_program is not None:

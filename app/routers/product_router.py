@@ -4,6 +4,7 @@ from app.exceptions.already_in_db_error import AlreadyInDatabaseError
 from app.exceptions.invalid_input_error import InvalidInputError
 from app.exceptions.not_found_error import NotFoundError
 
+from app.schemas.product_form_schema import ProductFormOut
 from app.schemas.product_schema import ProductOut, ProductIn, ProductProgramIn, SimpleProduct
 from app.services.product_service import ProductService
 
@@ -17,6 +18,13 @@ def get_products(is_in_program: Optional[str] = None, product_service: ProductSe
         raise HTTPException(status_code=404, detail=str(e))
     except InvalidInputError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+@product_router.get("/forms", response_model=List[ProductFormOut], status_code=status.HTTP_200_OK)
+def get_product_forms(product_service: ProductService = Depends(ProductService)):
+    try:
+        return product_service.get_product_forms()
+    except NotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 @product_router.get("/{product_id}", response_model=ProductOut, status_code=status.HTTP_200_OK)
 def get_product(product_id: int, product_service: ProductService = Depends(ProductService)):
@@ -47,4 +55,4 @@ def register_product_in_program(product_id: int, program_in: ProductProgramIn, p
         raise HTTPException(status_code=404, detail=str(e))
     except AlreadyInDatabaseError as e:
         raise HTTPException(status_code=409, detail=str(e))
-    
+
