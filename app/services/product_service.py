@@ -14,18 +14,17 @@ class ProductService:
     def __prepare_product(self, product: Product, points: Optional[int] = 0):
         return {
             "id": product.id,
-            "name": product.name,
+            "name": product.name + " " + product.product_form.name,
             "description": product.description,
             "price": product.price,
             "is_in_program": product.is_in_program,
             "points_per_purchase": product.points_per_purchase,
             "points_for_redemption": product.points_for_redemption,
-            "product_form": product.product_form.name,
             "points_count": points
         }
     def __prepare_simple_product(self, product: Product, points: Optional[int] = 0):
         return {
-            "name": product.name,
+            "name": product.name + " " +product.product_form.name,
             "product_form": product.product_form.name,
             "points_count": points,
             "is_in_program": product.is_in_program
