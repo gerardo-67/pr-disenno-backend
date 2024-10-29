@@ -49,7 +49,8 @@ class RequestService:
             ,product_id: int = None
             ,purchase_date: date = None
             ,request_state_id: int = None
-            ,user_id: int = None):
+            ,user_id: int = None
+            ,invoice_id: int = None):
         session = next(self.db.get_session())
         requests = session.query(Request)
         if pharmacy_id is not None:
@@ -62,6 +63,9 @@ class RequestService:
             requests = requests.filter(Request.request_state_id == request_state_id)
         if user_id is not None:
             requests = requests.filter(Request.user_id == user_id)
+        if invoice_id is not None:
+            requests = requests.filter(Request.invoice_id == invoice_id)
+        
         requests = requests.all()
         
         return [self.__prepare_simple_request(request) for request in requests]

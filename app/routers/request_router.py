@@ -15,10 +15,11 @@ def get_requests(
     purchase_date: Optional[date] = None, 
     request_state_id: Optional[int] = None, 
     user_id: Optional[int] = None,
+    invoice_id: Optional[int] = None,
     request_service: RequestService = Depends(RequestService)
     ):
     try:
-        return request_service.get_requests(pharmacy_id=pharmacy_id, product_id=product_id, purchase_date=purchase_date, request_state_id=request_state_id, user_id=user_id)
+        return request_service.get_requests(pharmacy_id=pharmacy_id, product_id=product_id, purchase_date=purchase_date, request_state_id=request_state_id, user_id=user_id, invoice_id=invoice_id)
     except NotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
