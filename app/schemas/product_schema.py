@@ -30,6 +30,7 @@ class ProductProgramIn(BaseModel):
 
 
 class SimpleProduct(BaseModel):
+    id: int
     name: str
     points_count: int
     is_in_program: bool
