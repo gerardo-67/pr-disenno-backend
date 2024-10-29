@@ -118,6 +118,9 @@ class RequestService:
     def create_request(self, request: RequestIn):
         session = next(self.db.get_session())
         request = Request(**request.model_dump())
+        request_state = session.query(RequestState).filter(RequestState.name == "Pending").first()
+        request.request_state_id = request_state.id
+        
         session.add(request)
         session.commit()
         session.refresh(request)

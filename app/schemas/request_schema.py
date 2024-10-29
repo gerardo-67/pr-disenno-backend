@@ -25,7 +25,6 @@ class RequestIn(BaseModel):
     purchase_date: date
     product_quantity: int
     invoice_image: str # base64 encoded
-    request_state_id: int
     pharmacy_id: int
     user_id: int
     product_id: int
