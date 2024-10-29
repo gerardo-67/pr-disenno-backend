@@ -9,6 +9,7 @@ class ProductOut(BaseModel):
     description: str
     price: int
     is_in_program: bool
+    product_form: str 
     points_per_purchase: Optional[int] = None
     points_for_redemption: Optional[int] = None
     points_count: Optional[int] = 0

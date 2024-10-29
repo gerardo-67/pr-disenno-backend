@@ -20,6 +20,7 @@ class ProductService:
             "is_in_program": product.is_in_program,
             "points_per_purchase": product.points_per_purchase,
             "points_for_redemption": product.points_for_redemption,
+            "product_form": product.product_form.name,
             "points_count": points
         }
     def __prepare_simple_product(self, product: Product, points: Optional[int] = 0):
