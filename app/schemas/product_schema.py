@@ -31,6 +31,5 @@ class ProductProgramIn(BaseModel):
 
 class SimpleProduct(BaseModel):
     name: str
-    product_form: str
     points_count: int
     is_in_program: bool
