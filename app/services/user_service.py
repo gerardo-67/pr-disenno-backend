@@ -43,7 +43,7 @@ class UserService:
         user_in_db = session.query(User).filter(User.email == user.email).first()
         if user_in_db is not None:
             raise AlreadyInDatabaseError("User already exists")
-        session = next(self.db).get_session()
+        session = next(self.db.get_session())
         user = User(**user.model_dump())
         session.add(user)
         session.commit()
