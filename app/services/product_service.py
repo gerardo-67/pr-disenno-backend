@@ -72,15 +72,19 @@ class ProductService:
     
     def get_products_of_user(self, user_id: int, is_in_program: Optional[bool] = None):
         session = next(self.db.get_session())
+        
         products = (
-        session.query(Product, user_product_points.c.points)
-        .outerjoin(user_product_points, Product.id == user_product_points.c.product_id)
-        .filter(user_product_points.c.user_id == user_id)
+            session.query(Product, user_product_points.c.points)
+            .outerjoin(user_product_points, (Product.id == user_product_points.c.product_id) & (user_product_points.c.user_id == user_id))
         )
+
         if is_in_program is not None:
             products = products.filter(Product.is_in_program == is_in_program)
-        
-        return [self.__prepare_simple_product(product, points) for product, points in products.all()]
+
+        # Si points es None, asignamos 0 como valor predeterminado
+        return [self.__prepare_simple_product(product, points or 0) for product, points in products.all()]
+
+
     
     def register_product_in_program(self, product_id: int, points_per_purchase: int, points_for_redemption: int):
         session = next(self.db.get_session())

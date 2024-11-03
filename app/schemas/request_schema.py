@@ -30,7 +30,7 @@ class RequestIn(BaseModel):
     product_id: int
 
 class RequestStateUpdate(BaseModel):
-    request_state_id: int
+    request_state: str
     
 class SimpleRequest(BaseModel):
     id: int

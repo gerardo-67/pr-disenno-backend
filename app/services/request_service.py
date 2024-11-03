@@ -15,7 +15,9 @@ class RequestService:
     def __prepare_product(self, product: Product, points: Optional[int] = 0):
         return {
             "id": product.id,
-            "name": product.name,
+            "name": product.name + " " + product.product_form.name,
+            "only_name": product.name,
+            "product_form": product.product_form.name,
             "description": product.description,
             "price": product.price,
             "is_in_program": product.is_in_program,
@@ -80,14 +82,14 @@ class RequestService:
     
     # Updates the state of a request, if the request is in pending state and the 
     # new state is accepted, the user points are updated
-    def update_request_state(self, id, request_state_id):
+    def update_request_state(self, id, request_state):
         session = next(self.db.get_session())
         request = session.query(Request).filter(Request.id == id).first()
         if request is None:
             raise NotFoundError("Request not found")
         if request.product.is_in_program == False:
             raise NotFoundError("Product is not in program")
-        new_state = session.query(RequestState).filter(RequestState.id == request_state_id).first()
+        new_state = session.query(RequestState).filter(RequestState.name == request_state).first()
         if new_state is None:
             raise NotFoundError("Request state not found")
         
@@ -113,7 +115,7 @@ class RequestService:
                     )
                     .values(points=user_points.points + points_to_add)
                 )
-        request.request_state_id = request_state_id
+        request.request_state_id = new_state.id
         session.commit()
         session.refresh(request)
         

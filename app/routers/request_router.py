@@ -37,7 +37,7 @@ def create_request(request: RequestIn, request_service: RequestService = Depends
 @request_router.put("/{request_id}/state", response_model=RequestOut, status_code=status.HTTP_200_OK)
 def update_request_state(request_id: int, request_state: RequestStateUpdate, request_service: RequestService = Depends(RequestService)):
     try:
-        return request_service.update_request_state(request_id, request_state.request_state_id)
+        return request_service.update_request_state(request_id, request_state.request_state)
     except NotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
