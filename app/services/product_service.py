@@ -15,6 +15,8 @@ class ProductService:
         return {
             "id": product.id,
             "name": product.name + " " + product.product_form.name,
+            "only_name": product.name,
+            "product_form": product.product_form.name,
             "description": product.description,
             "price": product.price,
             "is_in_program": product.is_in_program,
@@ -27,6 +29,8 @@ class ProductService:
         return {
             "id": product.id,
             "name": product.name + " " +product.product_form.name,
+            "only_name": product.name,
+            "product_form": product.product_form.name,
             "points_count": points,
             "is_in_program": product.is_in_program
         }

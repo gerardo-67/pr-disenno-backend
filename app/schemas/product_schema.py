@@ -6,6 +6,8 @@ from app.schemas.product_form_schema import ProductFormOut
 class ProductOut(BaseModel):
     id: int
     name: str
+    only_name: str
+    product_form: str
     description: str
     price: int
     is_in_program: bool
@@ -33,5 +35,7 @@ class ProductProgramIn(BaseModel):
 class SimpleProduct(BaseModel):
     id: int
     name: str
+    only_name: str
+    product_form: str
     points_count: int
     is_in_program: bool
