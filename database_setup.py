@@ -20,7 +20,7 @@ Base.metadata.create_all(bind=engine)
 
 
 def populate_db():
-    session = DatabaseManager().get_session()
+    session = next(DatabaseManager().get_session())
     users = []
     for i in range(20):
         if i == 0:
@@ -118,7 +118,7 @@ populate_db()
 
 # delete all data from tables
 def delete_data():
-    session = DatabaseManager().get_session()
+    session = next(DatabaseManager().get_session())
     session.query(Request).delete()
     session.query(Pharmacy).delete()
     session.query(RequestState).delete()

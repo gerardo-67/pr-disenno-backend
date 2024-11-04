@@ -44,7 +44,8 @@ class RequestService:
             "id": request.id,
             "invoice_id": request.invoice_id,
             "product_name": request.product.name,
-            "request_state": request.request_state.name
+            "request_state": request.request_state.name,
+            "client_name": request.user.name
         }
     def get_requests(
             self, pharmacy_id: int = None

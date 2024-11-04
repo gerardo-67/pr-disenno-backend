@@ -37,3 +37,4 @@ class SimpleRequest(BaseModel):
     invoice_id: int
     product_name: str
     request_state: str
+    client_name: str

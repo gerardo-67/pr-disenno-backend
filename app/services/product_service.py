@@ -89,6 +89,7 @@ class ProductService:
     def register_product_in_program(self, product_id: int, points_per_purchase: int, points_for_redemption: int):
         session = next(self.db.get_session())
         product = session.query(Product).filter(Product.id == product_id).first()
+        print(product)
         if product is None:
             raise NotFoundError("Product not found")
         if product.is_in_program:
