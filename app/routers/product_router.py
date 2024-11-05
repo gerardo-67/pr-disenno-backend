@@ -56,3 +56,9 @@ def register_product_in_program(product_id: int, program_in: ProductProgramIn, p
     except AlreadyInDatabaseError as e:
         raise HTTPException(status_code=409, detail=str(e))
 
+@product_router.get("/{product_id}/user/{user_id}", response_model=ProductOut, status_code=status.HTTP_200_OK)
+def get_product_of_user(product_id: int, user_id: int, product_service: ProductService = Depends(ProductService)):
+    try:
+        return product_service.get_product_of_user(user_id=user_id, product_id=product_id)
+    except NotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))

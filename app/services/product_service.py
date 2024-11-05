@@ -23,7 +23,7 @@ class ProductService:
             "points_per_purchase": product.points_per_purchase,
             "points_for_redemption": product.points_for_redemption,
             "product_form": product.product_form.name,
-            "points_count": points
+            "points_count": points if points is not None else 0
         }
     def __prepare_simple_product(self, product: Product, points: Optional[int] = 0):
         return {
@@ -83,6 +83,19 @@ class ProductService:
 
         # Si points es None, asignamos 0 como valor predeterminado
         return [self.__prepare_simple_product(product, points or 0) for product, points in products.all()]
+    
+    def get_product_of_user(self, user_id: int, product_id: int):
+        session = next(self.db.get_session())
+        product = (
+            session.query(Product, user_product_points.c.points)
+            .outerjoin(user_product_points, (Product.id == user_product_points.c.product_id) & (user_product_points.c.user_id == user_id))
+            .filter(Product.id == product_id)
+            .first()
+        )
+        if product is None:
+            raise NotFoundError("Product not found")
+        
+        return self.__prepare_product(product[0], product[1])
 
 
     

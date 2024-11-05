@@ -21,6 +21,8 @@ Base.metadata.create_all(bind=engine)
 
 def populate_db():
     session = next(DatabaseManager().get_session())
+    
+    # Poblar usuarios
     users = []
     for i in range(20):
         if i == 0:
@@ -43,78 +45,66 @@ def populate_db():
     session.add_all(users)
     session.commit()
 
-    request_states = []
-    request_states.append(RequestState(name='Pending'))
-    request_states.append(RequestState(name='Accepted'))
-    request_states.append(RequestState(name='Rejected'))
-
+    # Poblar estados de solicitud
+    request_states = [
+        RequestState(name='Pending'),
+        RequestState(name='Accepted'),
+        RequestState(name='Rejected')
+    ]
     session.add_all(request_states)
     session.commit()
 
-    product_forms = []
-    product_forms.append(ProductForm(name='Tablet'))
-    product_forms.append(ProductForm(name='Capsule'))
-    product_forms.append(ProductForm(name='Syrup'))
-    product_forms.append(ProductForm(name='Injection'))
-    
+    # Poblar formas de producto
+    product_forms = [
+        ProductForm(name='Tablet'),
+        ProductForm(name='Capsule'),
+        ProductForm(name='Syrup'),
+        ProductForm(name='Injection')
+    ]
     session.add_all(product_forms)
     session.commit()
 
-    pharmacies = []
-    for i in range(10):
-        pharmacy = Pharmacy(
-            name=f'pharmacy{i}',
-            email=f'pharmacy{i}@gmail.com',
-            address=f'address{i}',
-            phone_number=f'{random.randint(100000000, 999999999)}',
-            schedule='8:00-20:00'
-        )
-        pharmacies.append(pharmacy)
+    # Poblar farmacias en Costa Rica
+    pharmacies = [
+        Pharmacy(name='Farmacia San Rafael', email='info@farmaciasanrafael.com', address='Calle 1, San Rafael de Escazú', phone_number='2222-2222', schedule='8:00-20:00'),
+        Pharmacy(name='Farmacia La Bomba', email='info@farmacialabomba.com', address='Avenida Central, San José', phone_number='2221-1212', schedule='8:00-22:00'),
+        Pharmacy(name='Farmacia 2000', email='info@farmacia2000.com', address='Avenida 10, San José', phone_number='2256-7890', schedule='8:00-21:00'),
+        Pharmacy(name='Farmacia Universal', email='info@farmaciauniversal.com', address='Calle 5, Cartago', phone_number='2552-5555', schedule='8:00-20:00'),
+        Pharmacy(name='Farmacia de la Salud', email='info@farmaciadelasalud.com', address='Calle 8, Alajuela', phone_number='2441-2323', schedule='9:00-21:00'),
+        Pharmacy(name='Farmacia San José', email='info@farmaciasanjose.com', address='Calle 4, San José', phone_number='2256-1234', schedule='8:00-20:00'),
+        Pharmacy(name='Farmacia Fischel', email='info@farmaciafischel.com', address='Avenida 2, San José', phone_number='2552-1212', schedule='8:00-22:00'),
+        Pharmacy(name='Farmacia CR', email='info@farmaciacr.com', address='Calle 3, Heredia', phone_number='2610-1010', schedule='8:00-20:00'),
+        Pharmacy(name='Farmacia La Nacional', email='info@farmacialanacional.com', address='Avenida 4, San José', phone_number='2221-1234', schedule='8:00-21:00'),
+        Pharmacy(name='Farmacia Más Salud', email='info@farmaciamassalud.com', address='Calle 15, San José', phone_number='2210-2020', schedule='8:00-22:00')
+    ]
     session.add_all(pharmacies)
     session.commit()
 
-    products = []
-    for i in range(30):
-        if i % 2 != 0:
-            points = random.randint(1, 200)
-            product = Product(
-                name=f'product{i}',
-                description=f'description{i}',
-                price=random.randint(1, 100),
-                is_in_program=True,
-                points_per_purchase=points,
-                points_for_redemption=points*2,
-                product_form_id=random.randint(1, 4)
-            )
-        else:
-            product = Product(
-                name=f'product{i}',
-                description=f'description{i}',
-                price=random.randint(1, 100),
-                product_form_id=random.randint(1, 4)
-            )
-        products.append(product)
+    # Poblar medicamentos comunes
+    products = [
+        Product(name='Paracetamol', description='Analgésico y antipirético', price=100, is_in_program=True, points_per_purchase=5, points_for_redemption=10, product_form_id=random.randint(1, 4)),
+        Product(name='Ibuprofeno', description='Antiinflamatorio', price=150, is_in_program=False, points_per_purchase=None, points_for_redemption=None, product_form_id=random.randint(1, 4)),
+        Product(name='Amoxicilina', description='Antibiótico', price=200, is_in_program=True, points_per_purchase=8, points_for_redemption=16, product_form_id=random.randint(1, 4)),
+        Product(name='Jarabe para la tos', description='Alivio para la tos', price=180, is_in_program=False, points_per_purchase=None, points_for_redemption=None, product_form_id=random.randint(1, 4)),
+        Product(name='Aspirina', description='Analgésico y antiinflamatorio', price=70, is_in_program=False, points_per_purchase=None, points_for_redemption=None, product_form_id=random.randint(1, 4)),
+        Product(name='Vitamina C', description='Suplemento vitamínico', price=120, is_in_program=True, points_per_purchase=4, points_for_redemption=8, product_form_id=random.randint(1, 4)),
+        Product(name='Cetirizina', description='Antihistamínico para alergias', price=150, is_in_program=True, points_per_purchase=4, points_for_redemption=8, product_form_id=random.randint(1, 4)),
+        Product(name='Omeprazol', description='Antiacido', price=250, is_in_program=True, points_per_purchase=7, points_for_redemption=14, product_form_id=random.randint(1, 4)),
+        Product(name='Clonazepam', description='Medicamento para la ansiedad', price=300, is_in_program=False, points_per_purchase=None, points_for_redemption=None, product_form_id=random.randint(1, 4)),
+        Product(name='Furosemida', description='Diurético', price=22, is_in_program=True, points_per_purchase=6, points_for_redemption=12, product_form_id=random.randint(1, 4)),
+        Product(name='Gliclazida', description='Medicamento para diabetes', price=400, is_in_program=True, points_per_purchase=10, points_for_redemption=20, product_form_id=random.randint(1, 4)),
+        Product(name='Metformina', description='Medicamento para diabetes tipo 2', price=180, is_in_program=False, points_per_purchase=None, points_for_redemption=None, product_form_id=random.randint(1, 4)),
+        Product(name='Amiodarona', description='Medicamento para arritmias', price=450, is_in_program=True, points_per_purchase=12, points_for_redemption=24, product_form_id=random.randint(1, 4)),
+        Product(name='Simvastatina', description='Medicamento para colesterol', price=300, is_in_program=False, points_per_purchase=None, points_for_redemption=None, product_form_id=random.randint(1, 4)),
+        Product(name='Sildenafil', description='Medicamento para la disfunción eréctil', price=350, is_in_program=False, points_per_purchase=None, points_for_redemption=None, product_form_id=random.randint(1, 4))
+    ]
+    
     session.add_all(products)
     session.commit()
 
-    # Crear solicitudes (requests)
-    requests = []
-    for i in range(50):
-        request = Request(
-            invoice_id=random.randint(10000, 99999),
-            purchase_date=date.today() - timedelta(days=random.randint(1, 30)),
-            product_quantity=random.randint(1, 5),
-            invoice_image=b'sampleimagebytes',
-            request_state_id=random.randint(1, 3),  # IDs de 'Pending', 'Accepted', 'Rejected'
-            pharmacy_id=random.randint(1, 10),  # IDs de las farmacias creadas
-            user_id=random.randint(1, 20),  # IDs de los usuarios creados
-            product_id=random.randint(1, 30)  # IDs de los productos creados
-        )
-        requests.append(request)
-    session.add_all(requests)
-    session.commit()
-
 populate_db()
+
+
 
 # delete all data from tables
 def delete_data():
