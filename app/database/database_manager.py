@@ -29,7 +29,5 @@ class DatabaseManager:
     def get_db(self):
         return self.SessionLocal()
 
-
-
 # Instanciar el DatabaseManager
 db_manager = DatabaseManager()

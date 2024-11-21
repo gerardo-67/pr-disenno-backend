@@ -6,6 +6,7 @@ from app.exceptions.not_found_error import NotFoundError
 from app.models import user_product_points
 from app.models.product import Product
 from app.models.product_form import ProductForm
+from app.models.trade import Trade
 
 class ProductService:
     def __init__(self):
@@ -113,3 +114,26 @@ class ProductService:
         session.commit()
         
         return self.__prepare_product(product)
+    
+    def get_products_stats_of_user(self, user_id: int):
+        session = next(self.db.get_session())
+        products = session.query(Product).all()
+        map = {}
+
+        for product in products:
+            map[product.name] = {"used_points": 0, "available_points": 0, "total_points": 0}
+            user_points = session.query(user_product_points).filter(
+                user_product_points.c.user_id == user_id,
+                user_product_points.c.product_id == product.id).first()
+            map[product.name]["available_points"] = user_points.points if user_points is not None else 0
+        
+        user_trades = session.query(Trade).filter(Trade.user_id == user_id).all()
+
+        for trade in user_trades:
+            map[trade.product.name]["used_points"] = trade.product.points_per_purchase * trade.quantity
+
+        
+        for product in products:
+            map[product.name]["total_points"] = map[product.name]["available_points"] + map[product.name]["used_points"]
+            
+        return map
