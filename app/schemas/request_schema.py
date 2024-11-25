@@ -38,3 +38,4 @@ class SimpleRequest(BaseModel):
     product_name: str
     request_state: str
     client_name: str
+    purchase_date: date

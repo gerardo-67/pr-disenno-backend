@@ -42,8 +42,8 @@ def populate_db():
                 identification=f'{random.randint(100000000, 999999999)}',
                 password='123',
                 is_admin=False,
-                used_points=random.randint(0, 100),
-                available_points=random.randint(0, 100),
+                used_points=random.randint(0, 900),
+                available_points=random.randint(0, 900),
                 total_trades=random.randint(0, 50)
             )
         users.append(user)
@@ -125,7 +125,7 @@ def populate_db():
     for i in range(50):
         request = Request(
             invoice_id=random.randint(1000, 9999),
-            product_id=random.randint(0, 14),
+            product_id=random.randint(1, 15),
             purchase_date=date.today() - timedelta(days=random.randint(0, 365)),
             product_quantity=random.randint(1, 10),
             invoice_image=f'invoice_{i}.jpg',
@@ -154,12 +154,13 @@ def populate_db():
     session.execute(user_product_points.insert(), user_product_points_data)
     session.commit()
 
-populate_db()
+
 
 # delete all data from tables
 def delete_data():
     session = next(DatabaseManager().get_session())
     session.query(Request).delete()
+    session.query(Trade).delete()
     session.query(Pharmacy).delete()
     session.query(RequestState).delete()
     session.query(user_product_points).delete()
@@ -174,7 +175,8 @@ def delete_data():
         DDL("ALTER SEQUENCE request_state_id_seq RESTART WITH 1;"),
         DDL("ALTER SEQUENCE product_id_seq RESTART WITH 1;"),
         DDL("ALTER SEQUENCE product_form_id_seq RESTART WITH 1;"),
-        DDL("ALTER SEQUENCE user_id_seq RESTART WITH 1;")
+        DDL("ALTER SEQUENCE user_id_seq RESTART WITH 1;"),
+        DDL("ALTER SEQUENCE trade_id_seq RESTART WITH 1;")
     ]
 
     # Ejecutar cada comando DDL
@@ -182,4 +184,5 @@ def delete_data():
         session.execute(ddl)
     session.commit()
 
+populate_db()
 #delete_data()
